@@ -5,25 +5,123 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daniel Transportes</title>
     <style>
-        body { margin: 0; font-family: Arial, sans-serif; background: url('imagem/imagen.jpg') no-repeat center center; background-size: cover; }
-        .tab-container { width: 100%; max-width: 600px; margin: 0 auto; padding-top: 20px; }
-        .tabs { display: flex; justify-content: space-around; cursor: pointer; }
-        .tab { padding: 10px 20px; background-color: #f1f1f1; border: 1px solid #ccc; border-bottom: none; text-align: center; flex: 1; }
-        .tab.active { background-color: white; border-bottom: 1px solid white; font-weight: bold; }
-        .tab-content { display: none; background: rgba(255, 255, 255, 0.8); padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
-        .tab-content.active { display: block; }
-        .container { width: 100%; max-width: 600px; margin: 0 auto; padding: 20px; background: rgba(255, 255, 255, 0.8); border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
-        h1, h2 { text-align: center; }
-        h2 { font-size: 0.9em; color: #555; }
-        label { display: block; margin-top: 10px; font-weight: bold; }
-        input, select, textarea { width: 100%; padding: 10px; margin-top: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
-        .date-fields { display: flex; justify-content: space-between; gap: 10px; }
-        .date-fields div { flex: 1; }
-        button { display: block; width: 100%; padding: 10px; margin-top: 15px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        button:hover { background-color: #45a049; }
-        #success-message { position: fixed; top: 10px; left: 50%; transform: translateX(-50%); display: none; background-color: #4CAF50; color: white; padding: 10px; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); z-index: 10; }
-        #cadastro-list > div { border-bottom: 1px solid #ddd; padding: 10px 0; }
-        .filter-container { margin-bottom: 15px; }
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: url('imagem/teste.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .tab-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding-top: 40px; 
+            <!-- DESCER OU SUBIR A TELA -->
+        }
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            cursor: pointer;
+        }
+        .tab {
+            padding: 10px 10px;
+            background-color: hwb(0 0% 69% / 0.733); <!-- Cor botão visualização -->
+            border: 1px solid #ccc;
+            border-bottom: none;
+            text-align: center;
+            flex: 3;
+        }
+        .tab.active {
+            background-color: hwb(0 0% 69% / 0.911); <!-- Cor botão cadastro -->
+            border-bottom: 1px solid rgba(255, 0, 0, 0.144);
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+            background: rgba(216, 61, 0, 0);
+            padding: 2px;
+            border-radius: 1px;<!-- Criar borda -->
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .container {
+            width: 100%;
+            max-width: 555px;<!-- Tamanho da modal de cima -->
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 1px;  <!-- Criar borda -->
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #7a2f03c7;<!-- Subtitulo -->
+        }
+        h2 {
+            font-size: 0.8em;
+            color: #1d050593;<!-- Subtitulo -->
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #000000;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .date-fields {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .date-fields div {
+            flex: 1;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            background-color: #db2c00;
+            color: rgb(255, 255, 255);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #db2c00;
+        }
+        #success-message {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+            background-color: #1adb0060;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(133, 38, 1, 0.925);
+            z-index: 10;
+        }
+        #cadastro-list > div {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .filter-container {
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
