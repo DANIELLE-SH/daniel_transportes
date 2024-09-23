@@ -27,14 +27,14 @@
         }
         .tab {
             padding: 10px 10px;
-            background-color: hwb(199 0% 52% / 0.596);
-            border: 1px solid #04002b;
+            background-color: hwb(0 0% 69% / 0.733);
+            border: 1px solid #ccc;
             border-bottom: none;
             text-align: center;
             flex: 3;
         }
         .tab.active {
-            background-color: hwb(199 0% 52% / 0.596);
+            background-color: hwb(0 0% 69% / 0.911);
             border-bottom: 1px solid rgba(255, 0, 0, 0.144);
             font-weight: bold;
         }
@@ -59,11 +59,11 @@
         }
         h1, h2 {
             text-align: center;
-            color: #06005ec7;
+            color: #7a2f03c7;
         }
         h2 {
             font-size: 0.8em;
-            color: #06005ec7;
+            color: #1d050593;
         }
         label {
             display: block;
@@ -91,14 +91,14 @@
             width: 100%;
             padding: 10px;
             margin-top: 15px;
-            background-color: #1100ff;
+            background-color: #db2c00;
             color: rgb(255, 255, 255);
             border: none;
             border-radius: 4px;
             cursor: pointer;
         }
         button:hover {
-            background-color: #051daa4b;
+            background-color: #db2c00;
         }
         #success-message {
             position: fixed;
@@ -110,7 +110,7 @@
             color: white;
             padding: 10px;
             border-radius: 5px;
-            box-shadow: 0 0 10px rgba(21, 255, 0, 0.925);
+            box-shadow: 0 0 10px rgba(133, 38, 1, 0.925);
             z-index: 10;
         }
         #cadastro-list > div {
@@ -133,10 +133,8 @@
             <div class="container">
                 <h1>Visualização</h1>
                 <div class="filter-container">
-                    <label for="filter-date-start">Data Inicial:</label>
-                    <input type="date" id="filter-date-start">
-                    <label for="filter-date-end">Data Final:</label>
-                    <input type="date" id="filter-date-end">
+                    <label for="filter-date">Filtrar por data:</label>
+                    <input type="date" id="filter-date">
                     <button onclick="filtrarPorData()">Filtrar</button>
                 </div>
                 <div id="cadastro-list"></div>
@@ -172,18 +170,18 @@
 
     <script>
         function setBackground(imageUrl) {
-            document.body.style.background = `url('${imageUrl}') no-repeat center center fixed`;
+            document.body.style.background = `url('${https://static.vecteezy.com/ti/vetor-gratis/p3/6588845-3d-renderizacao-podio-estilo-crianca-fundo-colorido-nuvens-e-tempo-com-espaco-vazio-para-criancas-ou-produto-bebe-vetor.jpg}') no-repeat center center fixed`;
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            setBackground('imagem/nuvem.jpg');
+            // Chama a função para definir o background
+            setBackground('imagem/teste.jpg');
 
             const reasonSelect = document.getElementById('reason');
             const additionalFields = document.getElementById('additional-fields');
             const successMessage = document.getElementById('success-message');
             const cadastroList = document.getElementById('cadastro-list');
-            const filterDateStartInput = document.getElementById('filter-date-start');
-            const filterDateEndInput = document.getElementById('filter-date-end');
+            const filterDateInput = document.getElementById('filter-date');
             const form = document.getElementById('registration-form');
             let cadastros = [];
 
@@ -220,6 +218,7 @@
                 successMessage.style.display = 'block';
                 setTimeout(() => successMessage.style.display = 'none', 3000);
 
+                // Limpa os campos do formulário
                 form.reset();
                 additionalFields.innerHTML = '';
             });
@@ -238,30 +237,9 @@
             }
 
             window.filtrarPorData = () => {
-                const dataInicial = filterDateStartInput.value;
-                const dataFinal = filterDateEndInput.value;
-
-                const cadastrosFiltrados = cadastros.filter(cadastro => {
-                    const dataCadastro = new Date(cadastro.dataCadastro);
-                    const inicio = new Date(dataInicial);
-                    const fim = new Date(dataFinal);
-
-                    // Verifica se o cadastro possui um período e se está dentro do intervalo de datas
-                    const periodoDataInicio = new Date(cadastro.periodo.split(' até ')[0]);
-                    const periodoDataFim = new Date(cadastro.periodo.split(' até ')[0]);
-
-                    const dataDentroDoIntervalo = 
-                        (!dataInicial || dataCadastro >= inicio) && 
-                        (!dataFinal || dataCadastro <= fim);
-
-                    const periodoDentroDoIntervalo = 
-                        (!dataInicial || periodoDataInicio >= inicio) && 
-                        (!dataFinal || periodoDataFim <= fim);
-
-                    return dataDentroDoIntervalo || periodoDentroDoIntervalo;
-                });
-
-                cadastroList.innerHTML = cadastrosFiltrados.length > 0 ? cadastrosFiltrados.map((cadastro, index) => `
+                const filtroData = filterDateInput.value;
+                const resultados = cadastros.filter(cadastro => cadastro.dataCadastro === filtroData);
+                cadastroList.innerHTML = resultados.map((cadastro, index) => `
                     <div>
                         <p><strong>Cadastro ${index + 1}:</strong></p>
                         <p><strong>Data do Cadastro:</strong> ${cadastro.dataCadastro}</p>
@@ -270,19 +248,25 @@
                         ${cadastro.periodo ? `<p><strong>Período:</strong> ${cadastro.periodo}</p>` : ''}
                         ${cadastro.descricao ? `<p><strong>Descrição:</strong> ${cadastro.descricao}</p>` : ''}
                     </div>
-                `).join('') : '<p>Nenhum cadastro encontrado para o intervalo selecionado.</p>';
+                `).join('');
             }
+
         });
 
         function openTab(event, tabName) {
-            const tabContents = document.querySelectorAll('.tab-content');
             const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
 
-            tabContents.forEach(content => content.classList.remove('active'));
-            tabs.forEach(tab => tab.classList.remove('active'));
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
 
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            event.currentTarget.classList.add('active');
             document.getElementById(tabName).classList.add('active');
-            event.target.classList.add('active');
         }
     </script>
 </body>

@@ -133,10 +133,8 @@
             <div class="container">
                 <h1>Visualização</h1>
                 <div class="filter-container">
-                    <label for="filter-date-start">Data Inicial:</label>
-                    <input type="date" id="filter-date-start">
-                    <label for="filter-date-end">Data Final:</label>
-                    <input type="date" id="filter-date-end">
+                    <label for="filter-date">Filtrar por data:</label>
+                    <input type="date" id="filter-date">
                     <button onclick="filtrarPorData()">Filtrar</button>
                 </div>
                 <div id="cadastro-list"></div>
@@ -176,14 +174,14 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            // Chama a função para definir o background
             setBackground('imagem/nuvem.jpg');
 
             const reasonSelect = document.getElementById('reason');
             const additionalFields = document.getElementById('additional-fields');
             const successMessage = document.getElementById('success-message');
             const cadastroList = document.getElementById('cadastro-list');
-            const filterDateStartInput = document.getElementById('filter-date-start');
-            const filterDateEndInput = document.getElementById('filter-date-end');
+            const filterDateInput = document.getElementById('filter-date');
             const form = document.getElementById('registration-form');
             let cadastros = [];
 
@@ -220,6 +218,7 @@
                 successMessage.style.display = 'block';
                 setTimeout(() => successMessage.style.display = 'none', 3000);
 
+                // Limpa os campos do formulário
                 form.reset();
                 additionalFields.innerHTML = '';
             });
@@ -238,30 +237,9 @@
             }
 
             window.filtrarPorData = () => {
-                const dataInicial = filterDateStartInput.value;
-                const dataFinal = filterDateEndInput.value;
-
-                const cadastrosFiltrados = cadastros.filter(cadastro => {
-                    const dataCadastro = new Date(cadastro.dataCadastro);
-                    const inicio = new Date(dataInicial);
-                    const fim = new Date(dataFinal);
-
-                    // Verifica se o cadastro possui um período e se está dentro do intervalo de datas
-                    const periodoDataInicio = new Date(cadastro.periodo.split(' até ')[0]);
-                    const periodoDataFim = new Date(cadastro.periodo.split(' até ')[0]);
-
-                    const dataDentroDoIntervalo = 
-                        (!dataInicial || dataCadastro >= inicio) && 
-                        (!dataFinal || dataCadastro <= fim);
-
-                    const periodoDentroDoIntervalo = 
-                        (!dataInicial || periodoDataInicio >= inicio) && 
-                        (!dataFinal || periodoDataFim <= fim);
-
-                    return dataDentroDoIntervalo || periodoDentroDoIntervalo;
-                });
-
-                cadastroList.innerHTML = cadastrosFiltrados.length > 0 ? cadastrosFiltrados.map((cadastro, index) => `
+                const filtroData = filterDateInput.value;
+                const resultados = cadastros.filter(cadastro => cadastro.periodo === filtroData);
+                cadastroList.innerHTML = resultados.map((cadastro, index) => `
                     <div>
                         <p><strong>Cadastro ${index + 1}:</strong></p>
                         <p><strong>Data do Cadastro:</strong> ${cadastro.dataCadastro}</p>
@@ -270,19 +248,25 @@
                         ${cadastro.periodo ? `<p><strong>Período:</strong> ${cadastro.periodo}</p>` : ''}
                         ${cadastro.descricao ? `<p><strong>Descrição:</strong> ${cadastro.descricao}</p>` : ''}
                     </div>
-                `).join('') : '<p>Nenhum cadastro encontrado para o intervalo selecionado.</p>';
+                `).join('');
             }
+
         });
 
         function openTab(event, tabName) {
-            const tabContents = document.querySelectorAll('.tab-content');
             const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
 
-            tabContents.forEach(content => content.classList.remove('active'));
-            tabs.forEach(tab => tab.classList.remove('active'));
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
 
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            event.currentTarget.classList.add('active');
             document.getElementById(tabName).classList.add('active');
-            event.target.classList.add('active');
         }
     </script>
 </body>
