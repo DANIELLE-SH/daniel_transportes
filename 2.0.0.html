@@ -173,10 +173,11 @@
     <script>
         function setBackground(imageUrl) {
             document.body.style.background = `url('${imageUrl}') no-repeat center center fixed`;
+            document.body.style.backgroundSize = 'cover'; // Para cobrir toda a tela
         }
-
+    
         document.addEventListener('DOMContentLoaded', () => {
-            setBackground('imagem/nuvem.jpg');
+            setBackground('https://static.vecteezy.com/ti/vetor-gratis/p1/22812257-nuvens-e-estrelas-o-sol-em-um-fundo-azul-ilustracaoial-infantil-do-ceu-em-um-estilo-decorativo-de-papel-3d-vetor.jpg');
 
             const reasonSelect = document.getElementById('reason');
             const additionalFields = document.getElementById('additional-fields');
