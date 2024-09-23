@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daniel Transportes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #FFA500; /* Laranja */
+            text-align: center;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-top: 0;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-group input[type="text"] {
+            width: calc(100% - 16px);
+        }
+        .form-group input[type="date"] {
+            width: calc(100% - 16px);
+        }
+        .form-group input[type="submit"] {
+            background-color: #FFA500; /* Laranja */
+            border: none;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .message {
+            color: #d9534f; /* Vermelho */
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        #additionalInfo {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Daniel Transportes</h1>
+        <h2>Servir bem para servir sempre</h2>
+        <div class="message" id="message"></div>
+        <form id="transportForm">
+            <div class="form-group">
+                <label for="reason">Motivo</label>
+                <select id="reason" name="reason" onchange="toggleAdditionalInfo()">
+                    <option value="">Selecione</option>
+                    <option value="naoVaiAula">Não vai à aula</option>
+                    <option value="atividadesExtras">Atividades Extras</option>
+                    <option value="outros">Outros</option>
+                </select>
+            </div>
+            <div class="form-group" id="additionalInfo">
+                <label for="additionalInfoInput">Detalhes</label>
+                <input type="text" id="additionalInfoInput" name="additionalInfo" maxlength="50" placeholder="Informe os detalhes">
+            </div>
+            <div class="form-group">
+                <label for="date">Data</label>
+                <input type="date" id="date" name="date">
+            </div>
+            <div class="form-group">
+                <label for="childName">Nome da Criança</label>
+                <input type="text" id="childName" name="childName" maxlength="50" placeholder="Nome da Criança">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Confirmar">
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function toggleAdditionalInfo() {
+            const reason = document.getElementById('reason').value;
+            const additionalInfo = document.getElementById('additionalInfo');
+            if (reason === 'outros') {
+                additionalInfo.style.display = 'block';
+            } else {
+                additionalInfo.style.display = 'none';
+            }
+        }
+
+        document.getElementById('transportForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const message = document.getElementById('message');
+            message.textContent = 'Informação enviada ao motorista. Caso alteração, contate-o imediatamente.';
+            message.style.color = '#5bc0de'; /* Azul claro para mensagem de sucesso */
+        });
+    </script>
+</body>
+</html>

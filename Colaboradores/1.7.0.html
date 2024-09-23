@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daniel Transportes</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-size: cover;
+        }
+        .tab-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding-top: 40px; 
+        }
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            cursor: pointer;
+        }
+        .tab {
+            padding: 10px 10px;
+            background-color: hwb(0 0% 69% / 0.733);
+            border: 1px solid #ccc;
+            border-bottom: none;
+            text-align: center;
+            flex: 3;
+        }
+        .tab.active {
+            background-color: hwb(0 0% 69% / 0.911);
+            border-bottom: 1px solid rgba(255, 0, 0, 0.144);
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+            background: rgba(216, 61, 0, 0);
+            padding: 2px;
+            border-radius: 1px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .container {
+            width: 100%;
+            max-width: 555px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 1px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #7a2f03c7;
+        }
+        h2 {
+            font-size: 0.8em;
+            color: #1d050593;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #000000;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .date-fields {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .date-fields div {
+            flex: 1;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            background-color: #db2c00;
+            color: rgb(255, 255, 255);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #db2c00;
+        }
+        #success-message {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+            background-color: #1adb0060;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(133, 38, 1, 0.925);
+            z-index: 10;
+        }
+        #cadastro-list > div {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .filter-container {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="tab-container">
+        <div class="tabs">
+            <div class="tab" onclick="openTab(event, 'aba01')">Visualização</div>
+            <div class="tab active" onclick="openTab(event, 'aba02')">Cadastro</div>
+        </div>
+
+        <div id="aba01" class="tab-content">
+            <div class="container">
+                <h1>Visualização</h1>
+                <div class="filter-container">
+                    <label for="filter-date">Filtrar por data:</label>
+                    <input type="date" id="filter-date">
+                    <button onclick="filtrarPorData()">Filtrar</button>
+                </div>
+                <div id="cadastro-list"></div>
+            </div>
+        </div>
+
+        <div id="aba02" class="tab-content active">
+            <div id="success-message">Registro efetuado com sucesso!</div>
+            <div class="container">
+                <h1>Daniel Transportes</h1>
+                <h2>"Servir bem para servir sempre"</h2>
+                <form id="registration-form">
+                    <label for="registration-date">Data do Cadastro:</label>
+                    <input type="date" id="registration-date" name="registration-date" required>
+
+                    <label for="child-name">Nome da criança:</label>
+                    <input type="text" id="child-name" name="child-name" maxlength="50" required>
+
+                    <label for="reason">Motivo:</label>
+                    <select id="reason" name="reason" required>
+                        <option value="" disabled selected>Selecione</option>
+                        <option value="nao-aula">Não vai à aula</option>
+                        <option value="outros">Outros</option>
+                    </select>
+
+                    <div id="additional-fields"></div>
+
+                    <button type="submit">Confirmar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function setBackground(imageUrl) {
+            document.body.style.background = `url('${https://static.vecteezy.com/ti/vetor-gratis/p3/6588845-3d-renderizacao-podio-estilo-crianca-fundo-colorido-nuvens-e-tempo-com-espaco-vazio-para-criancas-ou-produto-bebe-vetor.jpg}') no-repeat center center fixed`;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Chama a função para definir o background
+            setBackground('imagem/teste.jpg');
+
+            const reasonSelect = document.getElementById('reason');
+            const additionalFields = document.getElementById('additional-fields');
+            const successMessage = document.getElementById('success-message');
+            const cadastroList = document.getElementById('cadastro-list');
+            const filterDateInput = document.getElementById('filter-date');
+            const form = document.getElementById('registration-form');
+            let cadastros = [];
+
+            reasonSelect.addEventListener('change', () => {
+                additionalFields.innerHTML = reasonSelect.value === 'nao-aula' ? `
+                    <label>Período:</label>
+                    <div class="date-fields">
+                        <div><input type="date" id="start-date" name="start-date" required></div>
+                        <div><input type="date" id="end-date" name="end-date" required></div>
+                    </div>
+                ` : `
+                    <label for="description">Descrição:</label>
+                    <textarea id="description" name="description" rows="4" cols="50"></textarea>
+                `;
+            });
+
+            form.addEventListener('submit', event => {
+                event.preventDefault();
+                const registrationDate = document.getElementById('registration-date').value;
+                const childName = document.getElementById('child-name').value;
+                const reason = document.getElementById('reason').value;
+                const period = reason === 'nao-aula' ? `${document.getElementById('start-date').value} até ${document.getElementById('end-date').value}` : '';
+                const description = reason === 'outros' ? document.getElementById('description').value : '';
+
+                cadastros.push({
+                    dataCadastro: registrationDate,
+                    nome: childName,
+                    motivo: reason === 'nao-aula' ? 'Não vai à aula' : 'Outros',
+                    periodo: period,
+                    descricao: description
+                });
+
+                atualizarListaCadastros();
+                successMessage.style.display = 'block';
+                setTimeout(() => successMessage.style.display = 'none', 3000);
+
+                // Limpa os campos do formulário
+                form.reset();
+                additionalFields.innerHTML = '';
+            });
+
+            const atualizarListaCadastros = () => {
+                cadastroList.innerHTML = cadastros.map((cadastro, index) => `
+                    <div>
+                        <p><strong>Cadastro ${index + 1}:</strong></p>
+                        <p><strong>Data do Cadastro:</strong> ${cadastro.dataCadastro}</p>
+                        <p><strong>Nome da criança:</strong> ${cadastro.nome}</p>
+                        <p><strong>Motivo:</strong> ${cadastro.motivo}</p>
+                        ${cadastro.periodo ? `<p><strong>Período:</strong> ${cadastro.periodo}</p>` : ''}
+                        ${cadastro.descricao ? `<p><strong>Descrição:</strong> ${cadastro.descricao}</p>` : ''}
+                    </div>
+                `).join('');
+            }
+
+            window.filtrarPorData = () => {
+                const filtroData = filterDateInput.value;
+                const resultados = cadastros.filter(cadastro => cadastro.dataCadastro === filtroData);
+                cadastroList.innerHTML = resultados.map((cadastro, index) => `
+                    <div>
+                        <p><strong>Cadastro ${index + 1}:</strong></p>
+                        <p><strong>Data do Cadastro:</strong> ${cadastro.dataCadastro}</p>
+                        <p><strong>Nome da criança:</strong> ${cadastro.nome}</p>
+                        <p><strong>Motivo:</strong> ${cadastro.motivo}</p>
+                        ${cadastro.periodo ? `<p><strong>Período:</strong> ${cadastro.periodo}</p>` : ''}
+                        ${cadastro.descricao ? `<p><strong>Descrição:</strong> ${cadastro.descricao}</p>` : ''}
+                    </div>
+                `).join('');
+            }
+
+        });
+
+        function openTab(event, tabName) {
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            event.currentTarget.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+    </script>
+</body>
+</html>
